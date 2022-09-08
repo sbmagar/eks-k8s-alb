@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: api
+  name: api
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      # Set here your Gitlab Registry address
+      - name: api
+        image: 319078945897.dkr.ecr.ap-southeast-2.amazonaws.com/linkmi-prod-api:e6e20c06
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "500Mi"
+          requests:
+            cpu: "250m"
+            memory: "250Mi"
+        # readinessProbe:
+        #   httpGet:
+        #     path: /healthcheck
+        #     port: 80
+        #   timeoutSeconds: 5
+        #   initialDelaySeconds: 60
+        # livenessProbe:
+        #   httpGet:
+        #     path: /healthcheck
+        #     port: 80
+        #   timeoutSeconds: 5
+        #   initialDelaySeconds: 60
+      restartPolicy: Always
+status: {}
